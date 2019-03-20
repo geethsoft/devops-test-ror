@@ -1,24 +1,173 @@
-# README
+# DFA and DFA Minimization
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Getting Started
 
-Things you may want to cover:
+The program "DFA and DFA Minimization" is written Ruby Programming. 
 
-* Ruby version
+### Prerequisites
 
-* System dependencies
+Ruby-2x
+gems:
+	csv
+	sets
+	json
 
-* Configuration
+## Execution
 
-* Database creation
+### Verify DFA
+```
+ruby dfa.rb -i=test1.csv
+```
 
-* Database initialization
+### Verify String Acceptence
+```
+ruby dfa.rb -i=test1.csv -s=abbb
+```
 
-* How to run the test suite
+### DFA Minimization
+```
+ruby dfa.rb -i=test1.csv -s=abbb -m
+```
+### For mor help
+```
+ruby dfa.rb -h
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+## Sample Output
 
-* Deployment instructions
+```
+gc@gc:~/Documents/TF-P/geeth$ ruby dfa.rb -i=test1.csv -s=abbb -m
+Transition table of give file:
 
-* ...
+	+---------------+---------------+---------------+---------------+---------------+
+	|	F	|	I	|	δ	|	a	|	b	|
+	+---------------+---------------+---------------+---------------+---------------+
+	|	 	|	>	|	A	|	B	|	F	|
+	|	 	|	 	|	B	|	G	|	C	|
+	|	*	|	 	|	C	|	A	|	C	|
+	|	 	|	 	|	D	|	C	|	G	|
+	|	 	|	 	|	E	|	H	|	F	|
+	|	 	|	 	|	F	|	C	|	G	|
+	|	 	|	 	|	G	|	G	|	E	|
+	|	 	|	 	|	H	|	G	|	C	|
+	+---------------+---------------+---------------+---------------+---------------+
+
+Success: Given input file is DFA
+********************** String Acceptence **********************
+
+Input string "abbb":
+
+	ACCEPTED
+
+String computation:
+
+	[A,abbb]
+
+	├─ [B, bbb]
+
+	├─ [C, bb]
+
+	├─ [C, b]
+
+	├─ [C, λ]
+
+	 "C" is a final state
+********************** DFA Minimization **********************
+Step1
+Table of state inequivalences:
+
+	 +---+
+	B|   |
+	 +---+---+
+	C|   |   |
+	 +---+---+---+
+	D|   |   |   |
+	 +---+---+---+---+
+	E|   |   |   |   |
+	 +---+---+---+---+---+
+	F|   |   |   |   |   |
+	 +---+---+---+---+---+---+
+	G|   |   |   |   |   |   |
+	 +---+---+---+---+---+---+---+
+	H|   |   |   |   |   |   |   |
+	 +---+---+---+---+---+---+---+
+	   A   B   C   D   E   F   G
+
+Step2
+Table of state inequivalences:
+
+	 +---+
+	B|   |
+	 +---+---+
+	C| ✓ | ✓ |
+	 +---+---+---+
+	D|   |   | ✓ |
+	 +---+---+---+---+
+	E|   |   | ✓ |   |
+	 +---+---+---+---+---+
+	F|   |   | ✓ |   |   |
+	 +---+---+---+---+---+---+
+	G|   |   | ✓ |   |   |   |
+	 +---+---+---+---+---+---+---+
+	H|   |   | ✓ |   |   |   |   |
+	 +---+---+---+---+---+---+---+
+	   A   B   C   D   E   F   G
+
+Step3: Final Cycle
+Table of state inequivalences:
+
+	 +---+
+	B| ✓ |
+	 +---+---+
+	C| ✓ | ✓ |
+	 +---+---+---+
+	D| ✓ | ✓ | ✓ |
+	 +---+---+---+---+
+	E|   | ✓ | ✓ | ✓ |
+	 +---+---+---+---+---+
+	F| ✓ | ✓ | ✓ |   | ✓ |
+	 +---+---+---+---+---+---+
+	G| ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+	 +---+---+---+---+---+---+---+
+	H| ✓ |   | ✓ | ✓ | ✓ | ✓ | ✓ |
+	 +---+---+---+---+---+---+---+
+	   A   B   C   D   E   F   G
+
+Minimized DFA Output
+Transition table of give file:
+
+	+---------------+---------------+---------------+---------------+---------------+
+	|	F	|	I	|	δ	|	a	|	b	|
+	+---------------+---------------+---------------+---------------+---------------+
+	|	 	|	>	|	AE	|	BH	|	DF	|
+	|	 	|	 	|	BH	|	G	|	C	|
+	|	 	|	 	|	DF	|	C	|	G	|
+	|	*	|	 	|	C	|	AE	|	C	|
+	|	 	|	 	|	G	|	G	|	AE	|
+	+---------------+---------------+---------------+---------------+---------------+
+
+Success: Given input file is DFA
+********************** string Acceptence for Minimized DFA **********************
+
+Input string "abbb":
+
+	ACCEPTED
+
+String computation:
+
+	[AE,abbb]
+
+	├─ [BH, bbb]
+
+	├─ [C, bb]
+
+	├─ [C, b]
+
+	├─ [C, λ]
+
+	 "C" is a final state
+
+```
+## Authors
+
+* **Geeth Mohan Chowdary Marathi** *
